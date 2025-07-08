@@ -271,6 +271,12 @@ position: {
 - Try refreshing the browser source
 - Check OBS logs for any errors
 
+**Chat bubbles not aligned with avatars:**
+- Make sure Browser Source resolution matches your stream resolution (1920x1080)
+- Try refreshing the browser source after the app loads
+- Check that the browser source "Transform" settings aren't applied
+- Ensure "Custom CSS" is empty in browser source settings
+
 **Performance issues:**
 - Lower the FPS from 60 to 30
 - Reduce browser source resolution
@@ -284,6 +290,11 @@ position: {
 **Audio interference:**
 - Right-click Browser Source → Filters → Add "Gain" filter
 - Set gain to -100dB to mute any potential audio
+
+**Positioning issues in OBS:**
+- Reset Browser Source transform (Right-click → Transform → Reset Transform)
+- Make sure "Use custom frame rate" is unchecked unless needed
+- Try recreating the browser source if positioning seems off
 
 ### 📱 Mobile/Multi-Platform Setup
 
