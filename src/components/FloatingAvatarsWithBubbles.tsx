@@ -144,47 +144,33 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
   }, []);
 
   return (
-    <>
-      {/* Avatar */}
-      <motion.div
-        initial={{ 
-          opacity: 0, 
-          scale: 0,
-        }}
-        animate={{ 
-          opacity: 1, 
-          scale: 1,
-        }}
-        exit={{ opacity: 0, scale: 0 }}
-        transition={{ duration: 0.5 }}
-        className="fixed transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-20"
-        style={{
-          left: `${position.x}vw`,
-          top: `${position.y}vh`,
-          transition: 'left 2s ease-in-out, top 2s ease-in-out', // Smooth movement
-        }}
-      >
-        <InteractiveAvatar 
-          avatar={avatar} 
-          lastMessage={lastMessage}
-          onClick={onAvatarClick}
-        />
-      </motion.div>
-
-      {/* Chat Bubble - positioned directly above avatar */}
+    <motion.div
+      initial={{ 
+        opacity: 0, 
+        scale: 0,
+      }}
+      animate={{ 
+        opacity: 1, 
+        scale: 1,
+      }}
+      exit={{ opacity: 0, scale: 0 }}
+      transition={{ duration: 0.5 }}
+      className="fixed transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-20"
+      style={{
+        left: `${position.x}vw`,
+        top: `${position.y}vh`,
+        transition: 'left 2s ease-in-out, top 2s ease-in-out',
+      }}
+    >
+      {/* Chat Bubble - positioned directly above avatar using relative positioning */}
       <AnimatePresence>
         {showBubble && currentMessage && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="fixed transform -translate-x-1/2 z-40 pointer-events-none"
-            style={{
-              left: `${position.x}vw`,
-              top: `calc(${position.y}vh - 120px)`, // Position 120px above the avatar
-              transition: 'left 2s ease-in-out, top 2s ease-in-out', // Sync with avatar movement
-            }}
+            className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 z-40 pointer-events-none"
           >
             <div className="relative max-w-xs">
               <div className="bg-white/95 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg border border-pink-200">
@@ -221,6 +207,13 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+
+      {/* Avatar */}
+      <InteractiveAvatar 
+        avatar={avatar} 
+        lastMessage={lastMessage}
+        onClick={onAvatarClick}
+      />
+    </motion.div>
   );
 }
