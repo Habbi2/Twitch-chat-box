@@ -24,14 +24,7 @@ export default function Home() {
   }, [messages]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 overflow-hidden">
-      {/* Animated Background Pattern */}
-      <div className="fixed inset-0 opacity-20">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,theme(colors.pink.200)_0%,transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,theme(colors.purple.200)_0%,transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_60%,theme(colors.indigo.200)_0%,transparent_50%)]"></div>
-      </div>
-
+    <div className="min-h-screen bg-transparent overflow-hidden">
       {/* Main Content */}
       <main className="relative">
         {/* Status Bar */}

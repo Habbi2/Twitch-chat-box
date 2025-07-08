@@ -68,7 +68,7 @@ export function FloatingAvatars({ activeUsers, recentMessages, messages }: Float
         sounds.newMessage();
       }
     }
-  }, [activeUsers]); // Removed 'sounds' and 'avatars' from dependencies
+  }, [activeUsers, avatars, sounds]); // Fixed dependency array
 
   // Remove inactive avatars
   useEffect(() => {

@@ -12,7 +12,7 @@ interface FloatingAvatarsProps {
   messages: ChatMessage[];
 }
 
-export function FloatingAvatars({ activeUsers, recentMessages, messages }: FloatingAvatarsProps) {
+export function FloatingAvatars({ activeUsers, recentMessages }: FloatingAvatarsProps) {
   const [avatars, setAvatars] = useState<StreamAvatar[]>([]);
   const [userLastMessages, setUserLastMessages] = useState<Record<string, ChatMessage>>({});
   const sounds = useSoundEffects();
@@ -68,7 +68,7 @@ export function FloatingAvatars({ activeUsers, recentMessages, messages }: Float
         sounds.newMessage();
       }
     }
-  }, [activeUsers]); // Removed 'sounds' and 'avatars' from dependencies
+  }, [activeUsers, avatars, sounds]); // Fixed dependency array
 
   // Remove inactive avatars
   useEffect(() => {

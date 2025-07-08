@@ -9,7 +9,7 @@ export function useSoundEffects() {
     if (typeof window === 'undefined') return;
     
     try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
       
@@ -24,8 +24,8 @@ export function useSoundEffects() {
       
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + duration);
-    } catch (error) {
-      console.log('Audio not supported');
+    } catch {
+      // Audio not supported - silently fail
     }
   }, []);
 

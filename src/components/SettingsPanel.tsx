@@ -4,20 +4,22 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Settings, Volume2, VolumeX, Palette, Zap } from 'lucide-react';
 
+interface Settings {
+  soundEnabled: boolean;
+  particleEffects: boolean;
+  avatarInteractions: boolean;
+  backgroundTheme: 'default' | 'dark' | 'neon' | 'pastel';
+}
+
 interface SettingsPanelProps {
-  settings: {
-    soundEnabled: boolean;
-    particleEffects: boolean;
-    avatarInteractions: boolean;
-    backgroundTheme: 'default' | 'dark' | 'neon' | 'pastel';
-  };
-  onSettingsChange: (settings: any) => void;
+  settings: Settings;
+  onSettingsChange: (settings: Settings) => void;
 }
 
 export function SettingsPanel({ settings, onSettingsChange }: SettingsPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const themes = [
+  const themes: Array<{ id: Settings['backgroundTheme']; name: string; preview: string }> = [
     { id: 'default', name: 'Cute Pastel', preview: 'bg-gradient-to-br from-pink-100 to-purple-100' },
     { id: 'dark', name: 'Dark Magic', preview: 'bg-gradient-to-br from-gray-800 to-purple-900' },
     { id: 'neon', name: 'Neon Cyber', preview: 'bg-gradient-to-br from-cyan-400 to-pink-500' },

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { StreamAvatar, CUTE_AVATARS, ChatMessage } from '@/types/chat';
+import { StreamAvatar, CUTE_AVATARS } from '@/types/chat';
 
-export function useAvatarManager(activeUsers: string[], messages: ChatMessage[]) {
+export function useAvatarManager(activeUsers: string[]) {
   const [avatars, setAvatars] = useState<StreamAvatar[]>([]);
 
   // Function to update avatar position
@@ -48,7 +48,7 @@ export function useAvatarManager(activeUsers: string[], messages: ChatMessage[])
     if (hasChanges) {
       setAvatars(newAvatars);
     }
-  }, [activeUsers]); // Remove avatars from dependencies to prevent infinite loop
+  }, [activeUsers, avatars]); // Fixed dependency array
 
   // Remove inactive avatars
   useEffect(() => {

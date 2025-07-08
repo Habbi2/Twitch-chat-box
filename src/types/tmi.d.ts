@@ -43,7 +43,7 @@ declare module 'tmi.js' {
     'badges-raw'?: string | null;
     username?: string;
     'message-type'?: string;
-    [key: string]: any;
+    [key: string]: string | number | boolean | null | undefined;
   }
 
   export class Client {
@@ -65,7 +65,7 @@ declare module 'tmi.js' {
     on(event: 'connecting', listener: (address: string, port: number) => void): this;
     on(event: 'logon', listener: () => void): this;
     
-    on(event: string, listener: (...args: any[]) => void): this;
+    on(event: string, listener: (...args: unknown[]) => void): this;
     
     say(channel: string, message: string): Promise<[string]>;
     whisper(username: string, message: string): Promise<[string]>;
