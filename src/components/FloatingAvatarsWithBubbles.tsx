@@ -114,12 +114,17 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
   const [position, setPosition] = useState(avatar.position);
   const [showBubble, setShowBubble] = useState(false);
   const [currentMessage, setCurrentMessage] = useState<ChatMessage | null>(null);
+  const [lastProcessedMessageId, setLastProcessedMessageId] = useState<string | null>(null);
 
-  // Check if latest message is for this avatar
+  // Check if latest message is for this avatar and hasn't been processed yet
   useEffect(() => {
-    if (latestGlobalMessage && latestGlobalMessage.username === avatar.name) {
+    if (latestGlobalMessage && 
+        latestGlobalMessage.username === avatar.name && 
+        latestGlobalMessage.id !== lastProcessedMessageId) {
+      
       setCurrentMessage(latestGlobalMessage);
       setShowBubble(true);
+      setLastProcessedMessageId(latestGlobalMessage.id);
       
       // Hide bubble after 4 seconds
       const timer = setTimeout(() => {
@@ -129,7 +134,7 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
       
       return () => clearTimeout(timer);
     }
-  }, [latestGlobalMessage, avatar.name]);
+  }, [latestGlobalMessage, avatar.name, lastProcessedMessageId]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -174,7 +179,7 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
             style={{
               transform: 'translateX(-50%)', // Perfect centering
               marginBottom: '1rem',
-              marginLeft: '-200px', // Small pixel adjustment for OBS
+              marginLeft: '-100px',
             }}
           >
             <div className="relative max-w-xs">
