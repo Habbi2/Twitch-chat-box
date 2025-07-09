@@ -172,8 +172,9 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
             transition={{ duration: 0.3 }}
             className="absolute bottom-full left-1/2 z-40 pointer-events-none"
             style={{
-              transform: 'translateX(-60%)', // Fine-tune the centering
+              transform: 'translateX(-50%)', // Perfect centering
               marginBottom: '1rem',
+              marginLeft: '-8px', // Small pixel adjustment for OBS
             }}
           >
             <div className="relative max-w-xs">
