@@ -179,7 +179,7 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
             style={{
               transform: 'translateX(-50%)', // Perfect centering
               marginBottom: '1rem',
-              marginLeft: '-100px',
+              marginLeft: '-110px',
             }}
           >
             <div className="relative max-w-xs">
