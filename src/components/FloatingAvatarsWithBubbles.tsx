@@ -170,9 +170,10 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 z-40 pointer-events-none"
+            className="absolute bottom-full left-1/2 z-40 pointer-events-none"
             style={{
-              marginLeft: '-0.5rem', // Small adjustment to align better with avatar center
+              transform: 'translateX(-52%)', // Fine-tune the centering
+              marginBottom: '1rem',
             }}
           >
             <div className="relative max-w-xs">
