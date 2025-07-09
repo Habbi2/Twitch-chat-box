@@ -172,7 +172,7 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
             transition={{ duration: 0.3 }}
             className="absolute bottom-full left-1/2 z-40 pointer-events-none"
             style={{
-              transform: 'translateX(-52%)', // Fine-tune the centering
+              transform: 'translateX(-60%)', // Fine-tune the centering
               marginBottom: '1rem',
             }}
           >
