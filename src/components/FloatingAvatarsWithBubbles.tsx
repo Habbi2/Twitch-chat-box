@@ -15,6 +15,7 @@ interface FloatingAvatarsProps {
 export function FloatingAvatars({ activeUsers, recentMessages, messages }: FloatingAvatarsProps) {
   const [avatars, setAvatars] = useState<StreamAvatar[]>([]);
   const [userLastMessages, setUserLastMessages] = useState<Record<string, ChatMessage>>({});
+  const [processedMessageIds, setProcessedMessageIds] = useState<Set<string>>(new Set());
   const sounds = useSoundEffects();
 
   // Track last messages per user
@@ -81,6 +82,25 @@ export function FloatingAvatars({ activeUsers, recentMessages, messages }: Float
     return () => clearInterval(interval);
   }, []);
 
+  // Clean up old processed message IDs to prevent memory issues
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const oneHourAgo = Date.now() - 60 * 60 * 1000;
+      const recentMessageIds = new Set(
+        messages
+          .filter(msg => msg.timestamp > oneHourAgo)
+          .map(msg => msg.id)
+      );
+      
+      setProcessedMessageIds(prev => {
+        const filtered = new Set([...prev].filter(id => recentMessageIds.has(id)));
+        return filtered;
+      });
+    }, 5 * 60 * 1000); // Clean up every 5 minutes
+
+    return () => clearInterval(interval);
+  }, [messages]);
+
   const handleAvatarClick = (avatar: StreamAvatar) => {
     sounds.click();
     console.log(`Clicked on ${avatar.name}!`);
@@ -95,6 +115,8 @@ export function FloatingAvatars({ activeUsers, recentMessages, messages }: Float
             avatar={avatar} 
             lastMessage={userLastMessages[avatar.name]}
             latestGlobalMessage={messages[messages.length - 1]} // Pass latest message
+            processedMessageIds={processedMessageIds}
+            setProcessedMessageIds={setProcessedMessageIds}
             onAvatarClick={() => handleAvatarClick(avatar)}
           />
         ))}
@@ -107,24 +129,25 @@ interface FloatingAvatarContainerProps {
   avatar: StreamAvatar;
   lastMessage?: ChatMessage;
   latestGlobalMessage?: ChatMessage;
+  processedMessageIds: Set<string>;
+  setProcessedMessageIds: React.Dispatch<React.SetStateAction<Set<string>>>;
   onAvatarClick: () => void;
 }
 
-function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onAvatarClick }: FloatingAvatarContainerProps) {
+function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, processedMessageIds, setProcessedMessageIds, onAvatarClick }: FloatingAvatarContainerProps) {
   const [position, setPosition] = useState(avatar.position);
   const [showBubble, setShowBubble] = useState(false);
   const [currentMessage, setCurrentMessage] = useState<ChatMessage | null>(null);
-  const [lastProcessedMessageId, setLastProcessedMessageId] = useState<string | null>(null);
 
   // Check if latest message is for this avatar and hasn't been processed yet
   useEffect(() => {
     if (latestGlobalMessage && 
         latestGlobalMessage.username === avatar.name && 
-        latestGlobalMessage.id !== lastProcessedMessageId) {
+        !processedMessageIds.has(latestGlobalMessage.id)) {
       
       setCurrentMessage(latestGlobalMessage);
       setShowBubble(true);
-      setLastProcessedMessageId(latestGlobalMessage.id);
+      setProcessedMessageIds(prev => new Set([...prev, latestGlobalMessage.id]));
       
       // Hide bubble after 4 seconds
       const timer = setTimeout(() => {
@@ -134,7 +157,7 @@ function FloatingAvatarContainer({ avatar, lastMessage, latestGlobalMessage, onA
       
       return () => clearTimeout(timer);
     }
-  }, [latestGlobalMessage, avatar.name, lastProcessedMessageId]);
+  }, [latestGlobalMessage, avatar.name, processedMessageIds, setProcessedMessageIds]);
 
   useEffect(() => {
     const interval = setInterval(() => {
